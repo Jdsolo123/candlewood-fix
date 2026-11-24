@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Fix That Ate the Lake</title>
+<meta name="description" content="Candlewood Lake looks beautiful from the shore. Underneath, the state's fix for an invasive weed erased almost every plant. A scroll through the loss.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#06141c; --deep:#03080d; --mid:#0b2a38; --teal:#1d5a6b; --foam:#cfe6ea;
+  --paper:#ece6d6; --paper-ink:#1d1a14; --rose:#e9b7a6; --gold:#c9a96a;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--deep)}
+body{font-family:var(--sans);color:var(--foam);background:var(--deep);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+.skip{position:absolute;left:-999px;top:0;background:#fff;color:#000;padding:.6rem 1rem;z-index:1000}
+.skip:focus{left:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* progress rail */
+#rail{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));z-index:200}
+#depth{position:fixed;right:1.4rem;top:50%;transform:translateY(-50%);z-index:150;font:300 .72rem var(--sans);letter-spacing:.2em;text-transform:uppercase;writing-mode:vertical-rl;color:rgba(255,255,255,.7);mix-blend-mode:difference;pointer-events:none}
+#depth b{font-weight:500}
+
+/* reveal utility */
+.rv{opacity:0;transform:translateY(34px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+.eyebrow{font:400 .72rem var(--sans);letter-spacing:.34em;text-transform:uppercase;opacity:.75}
+h1,h2,h3{font-family:var(--serif);font-weight:300;line-height:1.02;letter-spacing:-.01em}
+em{font-style:italic}
+
+/* ---------- 1 SURFACE ---------- */
+#surface{position:relative;height:190vh}
+.s-stage{position:sticky;top:0;height:100vh;overflow:hidden}
+.s-photo{position:absolute;inset:-6%;background:url(img/dusk.jpg) center 62%/cover;will-change:transform;filter:saturate(1.05)}
+.s-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,28,.35) 0%,rgba(6,20,28,0) 35%,rgba(6,20,28,.1) 62%,rgba(3,8,13,.95) 100%)}
+.s-water{position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(180deg,transparent,rgba(3,8,13,.0));overflow:hidden;pointer-events:none}
+.s-water svg{position:absolute;inset:0;width:100%;height:100%}
+.s-copy{position:absolute;left:0;right:0;top:0;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 6vw;will-change:transform,opacity}
+.s-copy h1{font-size:clamp(3.4rem,10.5vw,9.5rem);color:#fff;text-shadow:0 2px 60px rgba(0,0,0,.35)}
+.s-copy h1 span{display:block;font-style:italic;font-weight:300;color:var(--rose)}
+.s-copy .eyebrow{margin-bottom:2rem;color:#fff}
+.s-copy p.sub{margin-top:2.2rem;max-width:34rem;font:300 1.15rem/1.7 var(--serif);font-size:1.45rem;color:rgba(255,255,255,.88)}
+.hint{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.8rem;font:400 .68rem var(--sans);letter-spacing:.34em;text-transform:uppercase;color:#fff;opacity:.85}
+.hint i{display:block;width:1px;height:54px;background:linear-gradient(#fff,transparent);animation:drip 2.2s infinite var(--ease)}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- 2 FOG ---------- */
+#fog{position:relative;background:#a8b3c0;color:#16202b;overflow:hidden}
+.fog-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:130vh}
+.fog-img{position:relative;overflow:hidden}
+.fog-img .inner{position:absolute;inset:-8% 0;background:url(img/friedrich.jpg) center/cover;will-change:transform}
+.fog-text{display:flex;flex-direction:column;justify-content:center;padding:12vh 7vw;background:linear-gradient(180deg,#a8b3c0,#8e9bab)}
+.fog-text h2{font-size:clamp(2.4rem,5vw,4.6rem);margin:1.2rem 0 1.8rem}
+.fog-text p{font:400 1.18rem/1.8 var(--serif);font-size:1.4rem;max-width:30rem}
+.fog-text p+p{margin-top:1.2rem}
+.caption{font:400 .72rem/1.6 var(--sans);letter-spacing:.06em;opacity:.7;margin-top:2.4rem}
+.fog-veil{position:absolute;left:0;right:0;bottom:0;height:30vh;background:linear-gradient(180deg,transparent,#0b2a38);pointer-events:none}
+
+/* ---------- 3 DESCENT ---------- */
+#descent{position:relative;height:620vh;background:linear-gradient(180deg,#0b2a38 0%,#0a2431 30%,#061923 60%,#03080d 100%)}
+.d-stage{position:sticky;top:0;height:100vh;overflow:hidden}
+#sea{position:absolute;inset:0;width:100%;height:100%;display:block}
+.d-light{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 70% at 50% -10%,rgba(190,235,240,.55),rgba(190,235,240,0) 60%);mix-blend-mode:screen;will-change:opacity}
+.d-grain{position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");mix-blend-mode:overlay}
+.d-year{position:absolute;left:6vw;bottom:7vh;font:300 clamp(5rem,16vw,14rem)/0.8 var(--serif);color:rgba(255,255,255,.82);font-variant-numeric:tabular-nums;letter-spacing:-.03em;text-shadow:0 4px 40px rgba(0,0,0,.4);pointer-events:none}
+.d-year small{display:block;font:400 .72rem var(--sans);letter-spacing:.34em;text-transform:uppercase;margin-bottom:1.4rem;mix-blend-mode:normal;color:rgba(255,255,255,.8)}
+.d-meter{position:absolute;left:6vw;top:12vh;width:min(320px,60vw);font:400 .7rem var(--sans);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.d-meter .bar{margin-top:.9rem;height:2px;background:rgba(255,255,255,.2);position:relative}
+.d-meter .bar i{position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--rose);transform-origin:left;transition:transform .15s linear}
+.d-meter .num{margin-top:.8rem;font:300 2.4rem var(--serif);letter-spacing:0;text-transform:none}
+.d-cap{position:absolute;right:6vw;top:50%;transform:translateY(-50%);width:min(30rem,82vw);opacity:0;transition:opacity .7s var(--ease),transform .7s var(--ease);transform:translateY(calc(-50% + 24px));pointer-events:none}
+.d-cap.on{opacity:1;transform:translateY(-50%)}
+.d-cap::before{content:'';position:absolute;inset:-4rem -6rem -4rem -4rem;background:radial-gradient(closest-side,rgba(3,8,13,.78),rgba(3,8,13,0));z-index:-1}
+.d-cap .eyebrow{color:var(--rose);margin-bottom:1rem;display:block}
+.d-cap p{font:300 clamp(1.5rem,2.6vw,2.2rem)/1.35 var(--serif);color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.d-note{position:absolute;right:6vw;bottom:3vh;font:400 .66rem var(--sans);letter-spacing:.12em;color:rgba(255,255,255,.55);max-width:22rem;text-align:right}
+
+/* ---------- 4 PLATES ---------- */
+#plates{position:relative;background:var(--paper);color:var(--paper-ink);padding:18vh 6vw 22vh}
+#plates .head{max-width:46rem;margin:0 auto 10vh;text-align:center}
+#plates h2{font-size:clamp(2.6rem,6vw,5.4rem);margin:1.2rem 0 1.6rem}
+#plates .head p{font:400 1.4rem/1.7 var(--serif);opacity:.85}
+.ref{max-width:1100px;margin:0 auto 12vh;display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center}
+.ref figure{overflow:hidden;background:#000}
+.ref figure img{width:100%;transition:transform 2.4s var(--ease)}
+.ref figure:hover img{transform:scale(1.04)}
+.ref figcaption{padding:1rem 0 0;font:400 .72rem/1.6 var(--sans);letter-spacing:.06em;color:#3a352a;background:var(--paper)}
+.ref .t h3{font-size:2.2rem;margin-bottom:1rem}
+.ref .t p{font:400 1.25rem/1.75 var(--serif)}
+.shelf{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.4vw,2.2rem)}
+.plate{position:relative;aspect-ratio:3/4;background:#0a0a0a;border:1px solid #000;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.plate svg{position:absolute;inset:6%;width:88%;height:88%}
+.plate svg .ink{transition:opacity 2.2s var(--ease) var(--wd,0s),transform 2.2s var(--ease) var(--wd,0s)}
+.plate .lab{position:absolute;left:0;right:0;bottom:0;padding:.9rem 1rem;display:flex;justify-content:space-between;font:400 .62rem var(--sans);letter-spacing:.24em;text-transform:uppercase;color:#cfc8b4;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.plate .gone{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:italic 300 1.7rem var(--serif);color:#e9b7a6;opacity:0;transition:opacity 2s var(--ease) calc(var(--wd,0s) + .6s)}
+.plate.empty svg .ink{opacity:0;transform:translateY(8px)}
+.plate.empty .gone{opacity:1}
+.shelf-note{max-width:40rem;margin:6vh auto 0;text-align:center;font:400 1.25rem/1.7 var(--serif);opacity:.85}
+.toggle{display:block;margin:5vh auto 0;background:none;border:1px solid var(--paper-ink);color:var(--paper-ink);padding:1rem 2rem;font:400 .72rem var(--sans);letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:background .3s,color .3s;min-height:48px}
+.toggle:hover{background:var(--paper-ink);color:var(--paper)}
+
+/* ---------- 5 DECISIONS ---------- */
+#who{background:var(--deep);padding:20vh 6vw}
+#who h2{font-size:clamp(2.6rem,6vw,5.4rem);max-width:56rem;margin:1.2rem 0 1.4rem}
+#who .lead{font:300 1.5rem/1.6 var(--serif);max-width:40rem;opacity:.85;margin-bottom:12vh}
+.tl{position:relative;max-width:900px;margin:0 auto;padding-left:3.4rem}
+.tl::before{content:"";position:absolute;left:.7rem;top:0;bottom:0;width:1px;background:rgba(207,230,234,.2)}
+.tl .fill{position:absolute;left:.7rem;top:0;width:1px;height:0;background:var(--rose)}
+.ev{position:relative;padding:0 0 11vh}
+.ev::before{content:"";position:absolute;left:-2.95rem;top:.6rem;width:11px;height:11px;border-radius:50%;background:var(--deep);border:1px solid var(--rose);transition:background .6s,box-shadow .6s}
+.ev.in::before{background:var(--rose);box-shadow:0 0 0 8px rgba(233,183,166,.15)}
+.ev .yr{font:300 clamp(3rem,7vw,5.5rem)/1 var(--serif);color:#fff;font-variant-numeric:tabular-nums}
+.ev h3{font-size:1.9rem;margin:.6rem 0 .5rem;color:var(--rose);font-weight:400}
+.ev p{font:300 1.25rem/1.7 var(--serif);max-width:34rem;opacity:.85}
+.ev .who{margin-top:.8rem;font:400 .68rem var(--sans);letter-spacing:.24em;text-transform:uppercase;opacity:.6}
+.disc{max-width:900px;margin:4vh auto 0;padding:1.6rem 1.8rem;border:1px solid rgba(207,230,234,.18);font:300 1.1rem/1.7 var(--serif);opacity:.85}
+
+/* ---------- 6 VOICES ---------- */
+#voices{background:linear-gradient(180deg,var(--deep),#10202a);padding:18vh 6vw}
+#voices h2{font-size:clamp(2.4rem,5vw,4.4rem);text-align:center;margin:1.2rem 0 10vh}
+#voices .eyebrow{display:block;text-align:center}
+.q{max-width:44rem;margin:0 auto 14vh;text-align:center}
+.q blockquote{font:300 clamp(1.7rem,3.4vw,2.7rem)/1.3 var(--serif);font-style:italic;color:#fff}
+.q cite{display:block;margin-top:1.4rem;font:400 .7rem var(--sans);letter-spacing:.26em;text-transform:uppercase;font-style:normal;color:var(--rose)}
+.q.ph blockquote{opacity:.45}
+
+/* ---------- 7 CLOSE ---------- */
+#close{position:relative;background:#10202a;padding:0 0 10vh}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.c-img{position:relative;overflow:hidden}
+.c-img .inner{position:absolute;inset:-6% 0;background:url(img/carp.jpg) center 30%/cover}
+.c-text{display:flex;flex-direction:column;justify-content:center;padding:14vh 7vw}
+.c-text h2{font-size:clamp(2.4rem,5vw,4.6rem);margin:1.2rem 0 1.6rem}
+.c-text p{font:300 1.35rem/1.75 var(--serif);max-width:32rem;opacity:.9}
+.c-text p+p{margin-top:1.2rem}
+.sources{max-width:900px;margin:12vh auto 0;padding:0 6vw}
+.sources h3{font:400 .72rem var(--sans);letter-spacing:.34em;text-transform:uppercase;margin-bottom:1.6rem;opacity:.7}
+.sources li{list-style:none;font:300 .98rem/1.7 var(--sans);opacity:.75;margin-bottom:.8rem;overflow-wrap:anywhere}
+.sources a{text-decoration-color:rgba(207,230,234,.4)}
+.ai{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(207,230,234,.15);font:300 .98rem/1.7 var(--sans);opacity:.7}
+footer{text-align:center;padding:8vh 6vw 2vh;font:300 italic 1.5rem var(--serif);opacity:.85}
+footer small{display:block;margin-top:1rem;font:400 .66rem var(--sans);letter-spacing:.3em;text-transform:uppercase;font-style:normal;opacity:.6}
+
+@media (max-width:820px){
+  .fog-grid,.c-grid,.ref{grid-template-columns:1fr}
+  .fog-img,.c-img{min-height:70vh}
+  .shelf{grid-template-columns:repeat(2,1fr)}
+  #depth{display:none}
+  .d-cap{right:5vw;left:5vw;width:auto;top:auto;bottom:34vh;transform:translateY(24px)}
+  .d-cap.on{transform:none}
+  .d-year{font-size:5.4rem}
+  .d-note{display:none}
+  .tl{padding-left:2.4rem}.ev::before{left:-2.05rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .hint i{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#who">Skip to main content</a>
+<div id="rail" aria-hidden="true"></div>
+<div id="depth" aria-hidden="true">Depth <b id="depthN">0 ft</b></div>
+
+<!-- 1 SURFACE -->
+<header id="surface">
+  <div class="s-stage">
+    <div class="s-photo" id="sPhoto" role="img" aria-label="Candlewood Lake at dusk, calm water reflecting a pink and blue sky"></div>
+    <div class="s-water" aria-hidden="true">
+      <svg viewBox="0 0 1440 400" preserveAspectRatio="none">
+        <g fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1" id="ripples"></g>
+      </svg>
+    </div>
+    <div class="s-copy" id="sCopy">
+      <span class="eyebrow">Candlewood Lake, Connecticut</span>
+      <h1>The Fix<span>That Ate the Lake</span></h1>
+      <p class="sub">It looks the same from the shore. Go under.</p>
+    </div>
+    <div class="hint" id="hint" aria-hidden="true">Scroll to sink<i></i></div>
+  </div>
+</header>
+
+<!-- 2 FOG -->
+<section id="fog" aria-labelledby="fogH">
+  <div class="fog-grid">
+    <div class="fog-img"><div class="inner" id="fogImg" role="img" aria-label="Caspar David Friedrich, Wanderer above the Sea of Fog, a man on a rock looking over fog-filled valleys"></div></div>
+    <div class="fog-text">
+      <span class="eyebrow rv">The view from above</span>
+      <h2 class="rv" id="fogH" style="--d:.1s">What the fog <em>hides</em></h2>
+      <p class="rv" style="--d:.2s">Friedrich painted a guy standing over a sea of fog, and the fog is kind of the whole point. The view is gorgeous, but it's a view of the top. You never get to see what's under the mist.</p>
+      <p class="rv" style="--d:.3s">Candlewood does the same thing at dusk, the surface just holds the sky. I grew up on this lake so I know that view really well. It's the underneath I want you to see.</p>
+      <p class="caption rv" style="--d:.4s">Caspar David Friedrich, <em>Wanderer above the Sea of Fog</em>, c. 1818, oil on canvas, Kunsthalle Hamburg.</p>
+    </div>
+  </div>
+  <div class="fog-veil"></div>
+</section>
+
+<!-- 3 DESCENT -->
+<section id="descent" aria-label="Descent underwater: the plants disappear year by year (illustration)">
+  <div class="d-stage">
+    <canvas id="sea" aria-hidden="true"></canvas>
+    <div class="d-light" id="dLight"></div>
+    <div class="d-grain"></div>
+    <div class="d-meter" aria-hidden="true">Plant cover (illustrative)
+      <div class="bar"><i id="coverBar"></i></div>
+      <div class="num" id="coverNum">100%</div>
+    </div>
+    <div class="d-cap" id="cap0"><span class="eyebrow">Before 2015</span><p>Native plants covering the bottom of the lake.</p></div>
+    <div class="d-cap" id="cap1"><span class="eyebrow">The weed</span><p>Eurasian milfoil, an invasive weed, starts choking the lake. Somebody has to do something.</p></div>
+    <div class="d-cap" id="cap2"><span class="eyebrow">2015 &amp; 2017</span><p>The state stocks about 8,000 sterile grass carp to eat the milfoil.</p></div>
+    <div class="d-cap" id="cap3"><span class="eyebrow">The cost</span><p>The carp ate the native plants too. Plant cover dropped to almost nothing.</p></div>
+    <div class="d-cap" id="cap4"><span class="eyebrow">2023</span><p>DEEP starts pulling carp out, 118 in a three day pilot. They say maybe 100 to 600 more have to go before the plants can come back.</p></div>
+    <div class="d-year" aria-hidden="true"><small>Year</small><span id="yr">2014</span></div>
+    <div class="d-note">Illustration. The shape of the loss is drawn from the reported facts, not from survey measurements.</div>
+  </div>
+</section>
+
+<!-- 4 PLATES -->
+<section id="plates" aria-labelledby="plH">
+  <div class="head">
+    <span class="eyebrow rv">After Haeckel</span>
+    <h2 class="rv" id="plH" style="--d:.1s">The plates go <em>blank</em></h2>
+    <p class="rv" style="--d:.2s">I picked Haeckel's plate 47, Aspidonia, because it's what a full lake should look like, every inch packed with a specimen. Funny thing is those are trilobites, which we only know from fossils, so the detail is more art than observation. Here every plate is a plant the lake used to have, and you get to watch them empty out.</p>
+  </div>
+  <div class="ref">
+    <figure class="rv"><img src="img/haeckel-plate47.jpg" alt="Ernst Haeckel, Kunstformen der Natur, plate 47, Aspidonia: black plate with many specimens arranged in a grid" loading="lazy" width="960" height="1362"><figcaption>Ernst Haeckel, <em>Kunstformen der Natur</em> (1904), plate 47, &ldquo;Aspidonia.&rdquo;</figcaption></figure>
+    <div class="t rv" style="--d:.15s"><h3>The format</h3><p>Black background, packed full, everything lined up. It's a picture of having a lot of stuff. So when plates start going empty you notice right away.</p></div>
+  </div>
+  <div class="shelf" id="shelf"></div>
+  <p class="shelf-note rv">Keep scrolling. They empty one at a time.</p>
+  <button class="toggle" id="toggle" type="button">Restore the plates</button>
+</section>
+
+<!-- 5 DECISIONS -->
+<section id="who" aria-labelledby="whoH">
+  <span class="eyebrow rv">Who made the call</span>
+  <h2 class="rv" id="whoH" style="--d:.1s">The lake didn&rsquo;t <em>do</em> this to itself</h2>
+  <p class="lead rv" style="--d:.2s">Saying everybody did it is a way of saying nobody did. So here are the decisions in order, with names on them.</p>
+  <div class="tl" id="tl">
+    <div class="fill" id="tlFill"></div>
+    <div class="ev"><div class="yr">1926</div><h3>A reservoir is born</h3><p>Connecticut Light &amp; Power gets approval to flood the valley and store water for hydropower, and the Rocky River station finishes in 1929. So the &ldquo;natural&rdquo; lake was already built by people.</p><div class="who">Connecticut Light &amp; Power</div></div>
+    <div class="ev"><div class="yr">2015</div><h3>First carp</h3><p>The first sterile grass carp go in to eat the milfoil.</p><div class="who">Candlewood Lake Authority &middot; CT DEEP</div></div>
+    <div class="ev"><div class="yr">2017</div><h3>Second stocking</h3><p>More carp. About 8,000 total across the two stockings.</p><div class="who">Candlewood Lake Authority &middot; CT DEEP</div></div>
+    <div class="ev"><div class="yr">2023</div><h3>Taking them back out</h3><p>DEEP starts removing carp, 118 in a three day pilot, and says maybe 100 to 600 more need to come out before plants can grow back.</p><div class="who">CT DEEP</div></div>
+  </div>
+  <div class="disc rv">Quick note: I don't have any ill will toward these agencies. They tried to fix an environmental problem with a green, environmental solution, and it just got out of hand.</div>
+</section>
+
+<!-- 6 VOICES -->
+<section id="voices" aria-labelledby="vH">
+  <span class="eyebrow rv">People who watched it change</span>
+  <h2 class="rv" id="vH" style="--d:.1s">What they <em>remember</em></h2>
+  <div class="q rv"><blockquote>&ldquo;I remember before the carp, the milfoil was so bad the entire cove was covered top to bottom in weeds. You literally couldn&rsquo;t go swimming without getting tangled up. They were so bad they reached the surface and started budding flowers. I had no idea underwater plants could bud flowers, it was insane.&rdquo;</blockquote><cite>Jeff &middot; grew up on the lake</cite></div>
+  <div class="q rv"><blockquote>&ldquo;You used to see weeds all along the bottom by the dock. Now you can see straight to the sand, and honestly it looks cleaner, which is the weird part.&rdquo;</blockquote><cite>Neighbor &middot; Candlewood Lake</cite></div>
+  <div class="q rv"><blockquote>&ldquo;I didn&rsquo;t think about it until somebody told me the plants were gone. The lake looked fine to me.&rdquo;</blockquote><cite>Neighbor &middot; Candlewood Lake</cite></div>
+  <div class="q rv"><blockquote>&ldquo;We fished that cove forever. At some point the fish just weren&rsquo;t hanging around the way they used to.&rdquo;</blockquote><cite>Neighbor &middot; Candlewood Lake</cite></div>
+</section>
+
+<!-- 7 CLOSE -->
+<section id="close" aria-labelledby="cH">
+  <div class="c-grid">
+    <div class="c-img"><div class="inner" id="carpImg" role="img" aria-label="The author holding a large grass carp at the water's edge"></div></div>
+    <div class="c-text">
+      <span class="eyebrow rv">One of the beasts</span>
+      <h2 class="rv" id="cH" style="--d:.1s">The carp isn&rsquo;t <em>the villain</em></h2>
+      <p class="rv" style="--d:.2s">The carp did exactly what grass carp do, and that's the whole problem. Somebody picked it for the job and nobody could see the bottom of the lake to check.</p>
+      <p class="rv" style="--d:.3s">That's me with one of the beasts, and yes it's a very unflattering picture. The pretty part is on top and the loss is underneath, and I wanted you to feel the gap between the two.</p>
+    </div>
+  </div>
+  <div class="sources">
+    <h3>Sources</h3>
+    <ul>
+      <li>CT DEEP, <a href="https://portal.ct.gov/DEEP/Fishing/General-Information/Removing-Triploid-Grass-Carp-from-Candlewood-Lake-and-Squantz-Pond">Removing Triploid Grass Carp from Candlewood Lake and Squantz Pond</a>.</li>
+      <li>Candlewood Lake Authority, <a href="https://candlewoodlakeauthority.org/Eurasian-Watermilfoil">Eurasian Watermilfoil</a>.</li>
+      <li>News-Times, <a href="https://www.newstimes.com/news/article/candlewood-lake-plants-carp-removal-exclosures-18095784.php">DEEP removing fish to revive plant life</a>.</li>
+      <li>Connecticut History, <a href="https://connecticuthistory.org/?p=152">Creating Candlewood Lake</a>.</li>
+      <li>Cronon, William. &ldquo;The Trouble with Wilderness; or, Getting Back to the Wrong Nature.&rdquo; <em>Uncommon Ground</em>, W. W. Norton, 1995, pp. 69&ndash;90.</li>
+      <li>Demos, T. J. <em>Against the Anthropocene</em>. Sternberg Press, 2017.</li>
+      <li>Friedrich, Caspar David. <em>Wanderer above the Sea of Fog</em>. c. 1818, Kunsthalle Hamburg.</li>
+      <li>Haeckel, Ernst. <em>Kunstformen der Natur</em>. Bibliographisches Institut, 1904, plate 47.</li>
+    </ul>
+    <p class="ai">AI disclosure: the ideas, photos, research choices and artist statement are mine. AI helped write the code for this site and helped with the visuals, as the course syllabus allows when disclosed. Jeff Solomon, GERMAN 303 / ENVIRON 304.</p>
+  </div>
+  <footer>Candlewood Lake looks beautiful from the shore.<small>The Fix That Ate the Lake</small></footer>
+</section>
+
+<script>
+(()=>{
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t*t*(3-2*t);
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
+
+/* ripples on the surface */
+(()=>{const g=$('#ripples');let s='';
+for(let i=0;i<22;i++){const y=20+i*i*0.7+i*6;const a=8+i*0.6;let d=`M0 ${y}`;
+ for(let x=0;x<=1440;x+=90)d+=` Q${x+45} ${y+(i%2?-a:a)} ${x+90} ${y}`;
+ s+=`<path d="${d}" style="opacity:${.15+i*.035}"><animate attributeName="d" dur="${6+i*.5}s" repeatCount="indefinite" values="${d};${d.replace(/ Q(\d+) (-?[\d.]+)/g,(m,x,yy)=>` Q${x} ${(+yy+(i%2?6:-6)).toFixed(1)}`)};${d}"/></path>`}
+g.innerHTML=s;if(RM)g.querySelectorAll('animate').forEach(a=>a.remove())})();
+
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+$$('.rv,.ev').forEach(el=>io.observe(el));
+
+/* ---------- procedural underwater meadow ---------- */
+const cv=$('#sea'),cx=cv.getContext('2d');let W=0,H=0,DPR=1;
+const plants=[];
+function buildPlants(){plants.length=0;seed=11;
+ const n=Math.round(clamp(W/9,60,170));
+ for(let i=0;i<n;i++){
+  plants.push({x:rnd()*W,h:.18+rnd()*.5,w:2+rnd()*3.4,ph:rnd()*6.28,sp:.6+rnd()*.9,
+   hue:150+rnd()*40,leaf:rnd()>.5,die:rnd(), // die: threshold at which it vanishes
+   n:4+Math.floor(rnd()*5),bend:(rnd()-.5)*.5})}
+ plants.sort((a,b)=>a.h-b.h)}
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);buildPlants()}
+addEventListener('resize',resize);resize();
+const motes=Array.from({length:70},()=>({x:rnd(),y:rnd(),r:.5+rnd()*1.8,s:.2+rnd()*.6,p:rnd()*6}));
+let P=0,cover=1,time=0;
+function draw(t){
+ time=t/1000;
+ cx.clearRect(0,0,W,H);
+ // sandy floor
+ const floorY=H*.86;
+ const fg=cx.createLinearGradient(0,floorY-20,0,H);
+ fg.addColorStop(0,'rgba(20,38,40,0)');fg.addColorStop(.25,'rgba(34,48,42,.9)');fg.addColorStop(1,'rgba(10,16,16,1)');
+ cx.fillStyle=fg;cx.fillRect(0,floorY-20,W,H-floorY+20);
+ // light shafts
+ const vis=lerp(.55,.12,P);
+ for(let i=0;i<5;i++){
+  const x=W*(.1+i*.2)+Math.sin(time*.2+i)*30;
+  const g=cx.createLinearGradient(x,0,x+W*.1,H);
+  g.addColorStop(0,`rgba(180,230,235,${.16*vis*(1-P*.7)})`);g.addColorStop(1,'rgba(180,230,235,0)');
+  cx.fillStyle=g;cx.beginPath();cx.moveTo(x-W*.04,0);cx.lineTo(x+W*.05,0);cx.lineTo(x+W*.17,H);cx.lineTo(x+W*.03,H);cx.fill()}
+ // plants, back to front
+ cover=clamp(1-ease(clamp((P-.36)/.4)),0,1);
+ // slight return seen at the very end (removals begin)
+ const sprout=ease(clamp((P-.9)/.1))*.06;
+ const live=Math.min(1,cover+sprout);
+ for(const p of plants){
+  const alive=clamp((live-p.die*.97)*14,0,1); // plants vanish at their own threshold
+  if(alive<=0)continue;
+  const depthTint=lerp(1,.45,P);
+  const baseY=floorY+ (p.h*40);
+  const hh=H*p.h*alive*(0.9+.1*Math.sin(time*p.sp+p.ph));
+  cx.lineWidth=p.w;cx.lineCap='round';
+  const light=lerp(48,22,P)*depthTint+8;
+  cx.strokeStyle=`hsla(${p.hue},46%,${light}%,${.88*alive})`;
+  const sway=Math.sin(time*p.sp+p.ph)*(14+p.h*40)*(RM?0:1);
+  cx.beginPath();cx.moveTo(p.x,baseY);
+  cx.bezierCurveTo(p.x+p.bend*60,baseY-hh*.4,p.x+sway*.6,baseY-hh*.7,p.x+sway,baseY-hh);cx.stroke();
+  // side fronds
+  cx.lineWidth=Math.max(1,p.w*.55);
+  for(let k=1;k<=p.n;k++){
+   const f=k/(p.n+1);
+   const yy=baseY-hh*f,xx=p.x+sway*f*f+p.bend*60*(1-f)*f;
+   const L=(p.leaf?26:15)*(1-f*.5)*alive*(1+p.h);
+   const s=k%2?1:-1;
+   cx.beginPath();cx.moveTo(xx,yy);cx.quadraticCurveTo(xx+s*L*.7,yy-L*.5+Math.sin(time*p.sp+k)*3,xx+s*L,yy-L*.25);cx.stroke()}
+ }
+ // motes / suspended particles
+ cx.fillStyle='rgba(220,245,248,.5)';
+ for(const m of motes){
+  const x=((m.x*W+Math.sin(time*m.s+m.p)*18)+W)%W,y=((m.y*H-time*8*m.s)%H+H)%H;
+  cx.globalAlpha=.1+.4*(1-P*.6);cx.beginPath();cx.arc(x,y,m.r,0,6.28);cx.fill()}
+ cx.globalAlpha=1;
+ // darkness with depth
+ cx.fillStyle=`rgba(2,6,10,${ease(P)*.35})`;cx.fillRect(0,0,W,H);
+ if(!RM)requestAnimationFrame(draw)
+}
+if(RM)draw(0);else requestAnimationFrame(draw);
+
+/* ---------- plate gallery (procedural engravings) ---------- */
+const species=[
+ {n:'I',kind:'whorl'},{n:'II',kind:'ribbon'},{n:'III',kind:'broad'},
+ {n:'IV',kind:'feather'},{n:'V',kind:'star'},{n:'VI',kind:'fan'}];
+function plantSVG(kind,sd){
+ seed=sd;const out=[];const ink='#e8e2cf';
+ const add=(d,w,o=1,delay)=>out.push(`<path class="ink" style="--wd:${delay}s" d="${d}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" opacity="${o}"/>`);
+ const specimens=[[50,96,.98,0],[22,98,.62,-8],[79,98,.68,8]];
+ specimens.forEach(([x0,y0,sc,rot],si)=>{
+  const top=y0-(90*sc+rnd()*8);const delay=(si*.25).toFixed(2);
+  const cxm=x0+rot;
+  add(`M${x0} ${y0} Q${x0-4+rot} ${(y0+top)/2} ${cxm} ${top}`,1.3*sc+.4,1,delay);
+  const steps=kind==='star'?5:kind==='fan'?7:9;
+  for(let i=1;i<=steps;i++){
+   const f=i/(steps+1),yy=y0-(y0-top)*f,xx=x0+(cxm-x0)*f;
+   for(const s of[-1,1]){
+    const L=(kind==='ribbon'?24:kind==='broad'?15:kind==='feather'?18:kind==='fan'?20:12)*sc*(1-f*.55);
+    let d;
+    if(kind==='whorl'||kind==='feather'){
+     d=`M${xx} ${yy} Q${xx+s*L*.6} ${yy-L*.2} ${xx+s*L} ${yy+L*.35}`;
+     add(d,.55,.9,delay);
+     for(let j=1;j<4;j++){const a=j/4;add(`M${xx+s*L*a*.9} ${yy+L*a*.3-L*.05} l${s*L*.18} ${L*.22}`,.35,.8,delay)}
+    }else if(kind==='ribbon'){
+     d=`M${xx} ${yy} C${xx+s*L*.4} ${yy-L*.6} ${xx+s*L*.9} ${yy-L*.5} ${xx+s*L} ${yy-L*.1}`;
+     add(d,.7,.9,delay);add(`M${xx} ${yy} C${xx+s*L*.4} ${yy-L*.5} ${xx+s*L*.8} ${yy-L*.45} ${xx+s*L*.95} ${yy-L*.12}`,.35,.7,delay);
+    }else if(kind==='broad'){
+     d=`M${xx} ${yy} C${xx+s*L*.2} ${yy-L*.8} ${xx+s*L*1.1} ${yy-L*.8} ${xx+s*L*1.2} ${yy-L*.2} C${xx+s*L*.8} ${yy+L*.1} ${xx+s*L*.3} ${yy+L*.1} ${xx} ${yy}`;
+     add(d,.6,.95,delay);add(`M${xx} ${yy} L${xx+s*L*1.05} ${yy-L*.35}`,.35,.7,delay);
+    }else if(kind==='fan'){
+     for(let j=0;j<4;j++){const a=-.5+j*.33;add(`M${xx} ${yy} l${s*L*Math.cos(a+.3)} ${-L*Math.sin(a+.8)*.9}`,.5,.9,delay)}
+    }else{
+     for(let j=0;j<5;j++){const a=-.9+j*.45;add(`M${xx} ${yy} l${s*L*Math.cos(a)} ${-L*Math.sin(a)*.9}`,.5,.9,delay)}
+    }}}
+  if(kind==='star'||kind==='fan'){for(let j=0;j<8;j++){const a=j*.78;add(`M${cxm} ${top} l${Math.cos(a)*7*sc} ${Math.sin(a)*7*sc}`,.5,.9,delay)}}
+ });
+ // root hatch
+ for(let i=0;i<10;i++){const x=8+i*9+rnd()*4;add(`M${x} 100 l${(rnd()-.5)*3} ${3+rnd()*3}`,.35,.4,0)}
+ return `<svg viewBox="0 0 100 106" aria-hidden="true">${out.join('')}</svg>`}
+const shelf=$('#shelf');
+species.forEach((s,i)=>{
+ const el=document.createElement('div');el.className='plate';
+ el.setAttribute('role','img');
+ el.setAttribute('aria-label',`Plate ${s.n}: a native aquatic plant study, drawn in the style of Haeckel`);
+ el.dataset.order=i;
+ el.style.setProperty('--wd',(i*.12)+'s');
+ el.innerHTML=plantSVG(s.kind,31+i*17)+`<div class="gone">absent</div><div class="lab"><span>Plate ${s.n}</span><span>Native</span></div>`;
+ shelf.appendChild(el)});
+const plateEls=$$('.plate');
+let manual=false;
+function plateScroll(){
+ if(manual)return;
+ const r=shelf.getBoundingClientRect();
+ const t=clamp((innerHeight*.9-r.top)/(innerHeight*.9+r.height*.35));
+ plateEls.forEach((p,i)=>{const th=.28+i*.1;p.classList.toggle('empty',t>th)})}
+$('#toggle').addEventListener('click',()=>{
+ manual=true;const anyEmpty=plateEls.some(p=>p.classList.contains('empty'));
+ plateEls.forEach(p=>p.classList.toggle('empty',!anyEmpty));
+ $('#toggle').textContent=anyEmpty?'Let the carp back in':'Restore the plates';
+ if(anyEmpty)setTimeout(()=>{manual=false;$('#toggle').textContent='Restore the plates'},60000)});
+
+/* ---------- master scroll handler ---------- */
+const sPhoto=$('#sPhoto'),sCopy=$('#sCopy'),hint=$('#hint'),surface=$('#surface'),
+ fogImg=$('#fogImg'),carpImg=$('#carpImg'),descent=$('#descent'),
+ dLight=$('#dLight'),coverBar=$('#coverBar'),coverNum=$('#coverNum'),yrEl=$('#yr'),
+ depthN=$('#depthN'),rail=$('#rail'),tl=$('#tl'),tlFill=$('#tlFill');
+const caps=[0,1,2,3,4].map(i=>$('#cap'+i));
+const capAt=[[0,.18],[.18,.36],[.36,.56],[.56,.8],[.8,1.01]];
+const YR=[[0,2012],[.18,2014],[.36,2015],[.56,2017],[.8,2022],[.9,2023],[1,2025]];
+function yearAt(p){for(let i=1;i<YR.length;i++){if(p<=YR[i][0]){const a=YR[i-1],b=YR[i];return Math.round(lerp(a[1],b[1],(p-a[0])/(b[0]-a[0])))}}return 2025}
+function parallax(el,host,amt){const r=host.getBoundingClientRect();const c=(r.top+r.height/2-innerHeight/2)/innerHeight;el.style.transform=`translate3d(0,${(-c*amt).toFixed(1)}px,0)`}
+let ticking=false;
+function onScroll(){
+ const sy=scrollY,max=document.documentElement.scrollHeight-innerHeight;
+ rail.style.width=(sy/max*100)+'%';
+ // surface
+ const sp=clamp(sy/(surface.offsetHeight-innerHeight));
+ if(!RM){sPhoto.style.transform=`translate3d(0,${(sp*-9).toFixed(2)}vh,0) scale(${1+sp*.35})`;
+ sCopy.style.transform=`translate3d(0,${(-sp*90).toFixed(1)}px,0)`;}
+ sCopy.style.opacity=1-clamp(sp*2.2);
+ hint.style.opacity=.85*(1-clamp(sp*6));
+ // parallax images
+ if(!RM){parallax(fogImg,fogImg.parentElement,160);parallax(carpImg,carpImg.parentElement,120)}
+ // descent
+ const dr=descent.getBoundingClientRect();
+ P=clamp(-dr.top/(descent.offsetHeight-innerHeight));
+ dLight.style.opacity=(1-ease(clamp(P*1.6))).toFixed(3);
+ const cv2=Math.round(clamp(1-ease(clamp((P-.36)/.4)))*100);
+ coverNum.textContent=cv2+'%';coverBar.style.transform=`scaleX(${cv2/100})`;
+ // year: 2014 -> 2025
+ yrEl.textContent=yearAt(P);
+ depthN.textContent=Math.round(lerp(0,60,P))+' ft';
+ caps.forEach((c,i)=>c.classList.toggle('on',P>=capAt[i][0]&&P<capAt[i][1]&&dr.top<innerHeight*.5&&dr.bottom>innerHeight*.5));
+ // timeline fill
+ const tr=tl.getBoundingClientRect();
+ tlFill.style.height=clamp((innerHeight*.6-tr.top)/tr.height)*tr.height+'px';
+ plateScroll();
+ ticking=false}
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+addEventListener('resize',onScroll);
+onScroll();
+})();
+</script>
+</body>
+</html>
